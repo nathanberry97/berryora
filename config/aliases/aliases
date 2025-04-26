@@ -1,0 +1,39 @@
+# Aliases
+alias docker="podman"
+alias vi="nvim ."
+alias vim="nvim"
+alias gh="history | grep"
+alias ls="ls -l"
+alias ..="cd .."
+alias neofetch="fastfetch"
+
+alias gb="git checkout -b"
+alias ga="git add -A"
+alias gc="git commit -m"
+alias gp="git push"
+alias gpn="git push --set-upstream origin"
+alias gP="git pull"
+alias gs="git status"
+alias gd="git diff"
+
+# Add local and go bin to path
+export PATH=$PATH:${HOME}/.local/bin
+export PATH=$PATH:${HOME}/go/bin
+
+# fzf Catppuccino theme
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#414559,bg:#303446,spinner:#f2d5cf,hl:#e78284 \
+--color=fg:#c6d0f5,header:#e78284,info:#ca9ee6,pointer:#f2d5cf \
+--color=marker:#f2d5cf,fg+:#c6d0f5,prompt:#ca9ee6,hl+:#e78284 \
+"
+
+# tmux fzf sessioniser keybinding
+bind -x '"\C-f": tmux-sessioniser'
+
+# get ip
+ipget() {
+  ifconfig | awk '/inet / && $2 != "127.0.0.1" {print $2}'
+}
+
+# command prompt theme
+eval "$(starship init bash)"

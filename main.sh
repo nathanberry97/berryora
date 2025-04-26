@@ -1,0 +1,269 @@
+#!/usr/bin/env bash
+
+updateSystem() {
+    echo "Updating system..."
+    sudo dnf update -y
+}
+
+installPackages() {
+    echo "Installing packages..."
+    packageList=(
+        alacritty
+        fastfetch
+        flatpak
+        fzf
+        git
+        golang
+        jetbrains-mono-fonts
+        make
+        neovim
+        nodejs
+        pipx
+        podman
+        ripgrep
+        tmux
+        unzip
+        zip
+    )
+
+    for package in "${packageList[@]}"; do
+        if ! rpm -q "$package" &>/dev/null; then
+            echo "Installing $package..."
+            sudo dnf install -y "$package"
+        else
+            echo "$package is already installed."
+        fi
+    done
+
+    # --- Install starship ---
+    if command -v starship &>/dev/null; then
+        echo "Starship is already installed."
+    else
+        echo "Installing starship..."
+        curl -sS https://starship.rs/install.sh | sh
+    fi
+}
+
+installNpmPackages() {
+    echo "Installing npm packages..."
+    npmPackages=(
+        sass
+    )
+
+    for package in "${npmPackages[@]}"; do
+        if ! npm list -g --depth=0 | grep -q "$package"; then
+            echo "Installing $package..."
+            sudo npm install -g "$package"
+        else
+            echo "$package is already installed."
+        fi
+    done
+}
+
+installFlatpakApps() {
+    echo "Installing Flatpak apps..."
+
+    if ! flatpak remotes | grep -q flathub; then
+        echo "Adding Flathub remote..."
+        sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    fi
+
+    flatpakApps=(
+        com.discordapp.Discord
+        com.google.Chrome
+        com.spotify.Client
+        com.valvesoftware.Steam
+        org.mapeditor.Tiled
+        org.mozilla.Thunderbird
+    )
+
+    for app in "${flatpakApps[@]}"; do
+        if ! flatpak list | grep -q "$app"; then
+            echo "Installing $app..."
+            flatpak install -y flathub "$app"
+        else
+            echo "$app is already installed."
+        fi
+    done
+}
+
+installAwsCli() {
+    echo "Installing AWS CLI..."
+    if ! command -v aws &>/dev/null; then
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        sudo ./aws/install
+        rm awscliv2.zip
+        rm -rf aws
+    else
+        echo "AWS CLI is already installed."
+    fi
+}
+
+gnomeShellExtensions() {
+    echo "Installing GNOME Shell extensions..."
+
+    if pipx list | grep -q gnome-extensions-cli; then
+        echo "gnome-extensions-cli is already installed."
+    else
+        echo "Installing gnome-extensions-cli..."
+        pipx install gnome-extensions-cli --system-site-packages
+    fi
+
+    gnomeExtensions=(
+        "just-perfection-desktop@just-perfection"
+        "space-bar@luchrioh"
+        "useless-gaps@pimsnel.com"
+    )
+
+    for extension in "${gnomeExtensions[@]}"; do
+        if gext list | grep -q "$extension"; then
+            echo "Extension $extension is already installed."
+        else
+            echo "Installing extension $extension..."
+            gext install "$extension"
+        fi
+    done
+
+    dconf load /org/gnome/shell/extensions/ < gnome/gnomeSettings.dconf
+}
+
+gnomeSettings() {
+    echo "Applying GNOME settings..."
+    
+    # --- Workspace Settings ---
+    echo "Setting up workspaces..."
+    gsettings set org.gnome.mutter dynamic-workspaces false
+    gsettings set org.gnome.desktop.wm.preferences num-workspaces 4
+
+    for i in {1..4}; do
+        gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-$i "['<Shift><Super>$i']"
+        gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-$i "['<Super>$i']"
+    done
+
+    # --- Disable Default Application Shortcuts ---
+    echo "Disabling default application shortcuts..."
+    for i in {1..9}; do
+        gsettings set org.gnome.shell.keybindings switch-to-application-$i "[]"
+    done
+
+    # --- Window Management and Screenshots---
+    echo "Setting window management shortcuts..."
+    gsettings set org.gnome.desktop.wm.keybindings close "['<Super>w']"
+    gsettings set org.gnome.shell.keybindings screenshot "['<Super>s']"
+
+    # --- Appearance Settings ---
+    echo "Setting appearance..."
+    gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+
+    SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    gsettings set org.gnome.desktop.background picture-uri-dark "file://${SCRIPT_DIR}/gnome/wallpaper.png"
+
+    echo "GNOME settings applied successfully."
+}
+
+setDotfiles() {
+    echo "Setting up dotfiles..."
+
+    # --- Add aliases to bashrc ---
+    if ! grep -Fq '. ~/.config/aliases/aliases' ~/.bashrc; then
+        {
+            echo '# --- Add aliases to bashrc ---'
+            echo 'if [ -f ~/.config/aliases/aliases ]; then'
+            echo '    . ~/.config/aliases/aliases'
+            echo 'fi'
+        } >> ~/.bashrc
+        echo "Added aliases block to ~/.bashrc"
+    else
+        echo "Aliases block already exists in ~/.bashrc"
+    fi
+
+    # --- Create required directories ---
+    mkdir -p ~/.config/{aliases,alacritty,nvim,tmux}
+
+    # --- List of dotfiles to purge ---
+    dotfilesToRemove=(
+        ~/.config/aliases/aliases
+        ~/.config/alacritty/alacritty.toml
+        ~/.config/nvim/init.vim
+        ~/.config/nvim/lua
+        ~/.config/starship.toml
+        ~/.config/tmux/tmux.conf
+    )
+
+    echo "Purging existing dotfiles..."
+    for file in "${dotfilesToRemove[@]}"; do
+        rm -rf "$file"
+    done
+
+    # --- Copy new dotfiles ---
+    echo "Copying new dotfiles..."
+    cp -r ./config/* ~/.config/
+
+    echo "Dotfiles setup complete."
+}
+
+setScripts() {
+    echo "Setting up scripts..."
+
+    # --- Create required directories ---
+    mkdir -p ~/.local/bin
+
+    # --- List of scripts to purge ---
+    scriptsToRemove=(
+        ~/.local/bin/tmux-sessioniser
+    )
+
+    echo "Purging existing scripts..."
+    for script in "${scriptsToRemove[@]}"; do
+        rm -rf "$script"
+    done
+
+    # --- Copy new scripts ---
+    echo "Copying new scripts..."
+    cp -r ./scripts/* ~/.local/bin/
+}
+
+configureGit() {
+    echo "Configuring git..."
+
+    if git config --global user.name &>/dev/null && git config --global user.email &>/dev/null; then
+        echo "Git is already configured."
+        return
+    else
+        read -p "Enter your git email: " email
+        read -p "Enter your git name: " username
+        git config --global user.name "$username"
+        git config --global user.email "$email"
+        git config --global core.editor "nvim"
+    fi
+}
+
+# --- Main Script Execution ---
+clear
+cat << "EOF"
+========================================
+ berryora - Fedora System Crafting Tool
+         by: nathan berry
+========================================
+EOF
+
+# --- Ask for sudo privileges at the start ---
+echo "Requesting sudo privileges..."
+sudo -v
+
+set -e
+echo "Starting installation..."
+
+updateSystem
+installPackages
+installFlatpakApps
+installNpmPackages
+installAwsCli
+gnomeShellExtensions
+gnomeSettings
+setDotfiles
+setScripts
+configureGit
+
+echo "Setup complete! Please reboot to apply all settings."
