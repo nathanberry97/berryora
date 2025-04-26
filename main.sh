@@ -18,6 +18,7 @@ installPackages() {
         neovim
         nodejs 
         pipx
+        podman
         ripgrep
         starship
         tmux
