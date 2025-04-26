@@ -1,0 +1,29 @@
+format = """
+$directory\
+$git_branch\
+$git_status\
+$line_break\
+$character
+"""
+
+[directory]
+style             = "bright-blue"
+truncation_length = 1
+format            = '[$path]($style)'
+
+[git_branch]
+style  = "bright-black"
+format = ' [$branch]($style)'
+
+[git_status]
+untracked  = "​"
+modified   = "​"
+staged     = "​"
+renamed    = "​"
+deleted    = "​"
+stashed    = "≡"
+format     = "[[(*$untracked$modified$staged$renamed$deleted)](bright-black) ($ahead_behind$stashed)](bright-white)"
+
+[character]
+success_symbol = "[>](bright-purple)"
+error_symbol   = "[>](bright-red)"
