@@ -5,6 +5,7 @@ alias vim="nvim"
 alias gh="history | grep"
 alias ls="ls -l"
 alias ..="cd .."
+alias neofetch="fastfetch"
 
 alias gb="git checkout -b"
 alias ga="git add -A"

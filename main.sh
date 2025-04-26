@@ -9,18 +9,18 @@ installPackages() {
     echo "Installing packages..."
     packageList=(
         alacritty
+        fastfetch
         flatpak
         fzf
         git
         golang
         jetbrains-mono-fonts
-        neofetch
+        make
         neovim
-        nodejs 
+        nodejs
         pipx
         podman
         ripgrep
-        starship
         tmux
         unzip
         zip
@@ -34,6 +34,14 @@ installPackages() {
             echo "$package is already installed."
         fi
     done
+
+    # --- Install starship ---
+    if command -v starship &>/dev/null; then
+        echo "Starship is already installed."
+    else
+        echo "Installing starship..."
+        curl -sS https://starship.rs/install.sh | sh
+    fi
 }
 
 installNpmPackages() {
@@ -66,6 +74,7 @@ installFlatpakApps() {
         com.spotify.Client
         com.valvesoftware.Steam
         org.mapeditor.Tiled
+        org.mozilla.Thunderbird
     )
 
     for app in "${flatpakApps[@]}"; do
@@ -138,9 +147,10 @@ gnomeSettings() {
         gsettings set org.gnome.shell.keybindings switch-to-application-$i "[]"
     done
 
-    # --- Window Management ---
+    # --- Window Management and Screenshots---
     echo "Setting window management shortcuts..."
     gsettings set org.gnome.desktop.wm.keybindings close "['<Super>w']"
+    gsettings set org.gnome.shell.keybindings screenshot "['<Super>s']"
 
     # --- Appearance Settings ---
     echo "Setting appearance..."
@@ -154,6 +164,19 @@ gnomeSettings() {
 
 setDotfiles() {
     echo "Setting up dotfiles..."
+
+    # --- Add aliases to bashrc ---
+    if ! grep -Fq '. ~/.config/aliases/aliases' ~/.bashrc; then
+        {
+            echo '# --- Add aliases to bashrc ---'
+            echo 'if [ -f ~/.config/aliases/aliases ]; then'
+            echo '    . ~/.config/aliases/aliases'
+            echo 'fi'
+        } >> ~/.bashrc
+        echo "Added aliases block to ~/.bashrc"
+    else
+        echo "Aliases block already exists in ~/.bashrc"
+    fi
 
     # --- Create required directories ---
     mkdir -p ~/.config/{aliases,alacritty,nvim,tmux}
@@ -216,10 +239,7 @@ configureGit() {
     fi
 }
 
-#########################
-# Main script execution #
-#########################
-
+# --- Main Script Execution ---
 clear
 cat << "EOF"
 ========================================
@@ -228,7 +248,7 @@ cat << "EOF"
 ========================================
 EOF
 
-# Ask for sudo privileges at the start
+# --- Ask for sudo privileges at the start ---
 echo "Requesting sudo privileges..."
 sudo -v
 

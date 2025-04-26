@@ -5,6 +5,10 @@
 > It installs and configures packages, desktop environments, and various utilities
 > to create a fully functional development environment.
 
+## Preview
+
+![image](./assets/preview.png)
+
 ## Features
 
 - Automated system updates
@@ -31,7 +35,7 @@ git clone https://github.com/nathanberry97/berryora.git
 2. Run the setup script:
 
 ```bash
-make install
+./main.sh
 ```
 
 3. The script will handle the rest of the setup process.
