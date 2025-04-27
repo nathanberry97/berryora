@@ -7,6 +7,17 @@ updateSystem() {
 
 installPackages() {
     echo "Installing packages..."
+
+    # --- Install HashiCorp repo if needed (for Terraform) ---
+    if ! command -v terraform &>/dev/null; then
+        echo "Adding HashiCorp repository..."
+        sudo dnf install -y dnf-plugins-core
+        wget -O- https://rpm.releases.hashicorp.com/fedora/hashicorp.repo | sudo tee /etc/yum.repos.d/hashicorp.repo
+    else
+        echo "Terraform is already installed."
+    fi
+
+    # --- Install Podman package ---
     packageList=(
         alacritty
         fastfetch
@@ -21,6 +32,7 @@ installPackages() {
         pipx
         podman
         ripgrep
+        terraform
         tmux
         unzip
         zip
@@ -41,6 +53,18 @@ installPackages() {
     else
         echo "Installing starship..."
         curl -sS https://starship.rs/install.sh | sh
+    fi
+
+    # --- Install AWS CLI ---
+    echo "Installing AWS CLI..."
+    if ! command -v aws &>/dev/null; then
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        sudo ./aws/install
+        rm awscliv2.zip
+        rm -rf aws
+    else
+        echo "AWS CLI is already installed."
     fi
 }
 
@@ -85,19 +109,6 @@ installFlatpakApps() {
             echo "$app is already installed."
         fi
     done
-}
-
-installAwsCli() {
-    echo "Installing AWS CLI..."
-    if ! command -v aws &>/dev/null; then
-        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-        unzip awscliv2.zip
-        sudo ./aws/install
-        rm awscliv2.zip
-        rm -rf aws
-    else
-        echo "AWS CLI is already installed."
-    fi
 }
 
 gnomeShellExtensions() {
@@ -259,7 +270,6 @@ updateSystem
 installPackages
 installFlatpakApps
 installNpmPackages
-installAwsCli
 gnomeShellExtensions
 gnomeSettings
 setDotfiles
