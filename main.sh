@@ -170,6 +170,9 @@ gnomeSettings() {
     SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     gsettings set org.gnome.desktop.background picture-uri-dark "file://${SCRIPT_DIR}/gnome/wallpaper.png"
 
+    # --- Ensure that useless-gaps extension works properly ---
+    gsettings set org.gnome.mutter auto-maximize "false"
+
     echo "GNOME settings applied successfully."
 }
 
