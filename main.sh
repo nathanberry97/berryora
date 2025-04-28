@@ -17,7 +17,7 @@ installPackages() {
         echo "Terraform is already installed."
     fi
 
-    # --- Install Podman package ---
+    # --- Install packages ---
     packageList=(
         alacritty
         fastfetch
@@ -125,6 +125,7 @@ gnomeShellExtensions() {
         "just-perfection-desktop@just-perfection"
         "space-bar@luchrioh"
         "useless-gaps@pimsnel.com"
+        "blur-my-shell@aunetx"
     )
 
     for extension in "${gnomeExtensions[@]}"; do
@@ -160,7 +161,7 @@ gnomeSettings() {
 
     # --- Window Management and Screenshots---
     echo "Setting window management shortcuts..."
-    gsettings set org.gnome.desktop.wm.keybindings close "['<Super>w']"
+    gsettings set org.gnome.desktop.wm.keybindings close "['<Super>q']"
     gsettings set org.gnome.shell.keybindings screenshot "['<Super>s']"
 
     # --- Appearance Settings ---
