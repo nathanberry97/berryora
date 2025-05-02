@@ -36,6 +36,7 @@ installPackages() {
         tmux
         unzip
         zip
+        gnome-tweaks
     )
 
     for package in "${packageList[@]}"; do
