@@ -37,6 +37,7 @@ installPackages() {
         unzip
         zip
         gnome-tweaks
+        pandoc
     )
 
     for package in "${packageList[@]}"; do
@@ -66,6 +67,14 @@ installPackages() {
         rm -rf aws
     else
         echo "AWS CLI is already installed."
+    fi
+
+    # --- Install pre-commit ---
+    echo "Installing pre-commit..."
+    if ! command -v pre-commit &>/dev/null; then
+        pipx install pre-commit
+    else
+        echo "pre-commit is already installed."
     fi
 }
 
