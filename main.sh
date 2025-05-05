@@ -173,6 +173,8 @@ gnomeSettings() {
     echo "Setting window management shortcuts..."
     gsettings set org.gnome.desktop.wm.keybindings close "['<Super>q']"
     gsettings set org.gnome.shell.keybindings screenshot "['<Super>s']"
+    gsettings set org.gnome.desktop.input-sources xkb-options "['caps:ctrl_modifier']"
+
 
     # --- Appearance Settings ---
     echo "Setting appearance..."
