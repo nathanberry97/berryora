@@ -24,11 +24,14 @@ installPackages() {
         flatpak
         fzf
         git
+        gnome-tweaks
         golang
         jetbrains-mono-fonts
+        libwebp-tools
         make
         neovim
         nodejs
+        pandoc
         pipx
         podman
         ripgrep
@@ -36,8 +39,6 @@ installPackages() {
         tmux
         unzip
         zip
-        gnome-tweaks
-        pandoc
     )
 
     for package in "${packageList[@]}"; do
