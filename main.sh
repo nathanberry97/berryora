@@ -104,6 +104,7 @@ installFlatpakApps() {
     fi
 
     flatpakApps=(
+        app.zen_browser.zen
         com.discordapp.Discord
         com.google.Chrome
         com.spotify.Client
