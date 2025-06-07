@@ -28,6 +28,7 @@ installPackages() {
         golang
         jetbrains-mono-fonts
         libwebp-tools
+        lua
         make
         neovim
         nodejs
