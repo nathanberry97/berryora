@@ -33,31 +33,7 @@ return {
         -- Configure LSPs for neovim
         local capabilities = require('cmp_nvim_lsp').default_capabilities()
         for i = 1, #lspToConfigure do
-            if lspToConfigure[i] == require('lspconfig').lua_ls then
-                lspToConfigure[i].setup({
-                    capabilities = capabilities,
-                    settings = {
-                        Lua = {
-                            runtime = {
-                                version = 'LuaJIT',
-                                path = vim.split(package.path, ';')
-                            },
-                            diagnostics = {
-                                globals = { 'vim' }
-                            },
-                            workspace = {
-                                library = { vim.env.VIMRUNTIME },
-                                checkThirdParty = false
-                            },
-                            telemetry = {
-                                enable = false
-                            }
-                        }
-                    }
-                })
-            else
-                lspToConfigure[i].setup({ capabilities = capabilities })
-            end
+            lspToConfigure[i].setup({ capabilities = capabilities })
         end
 
         -- Format code on save
