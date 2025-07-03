@@ -228,7 +228,11 @@ setDotfiles() {
 
     # --- Copy new dotfiles ---
     echo "Copying new dotfiles..."
-    cp -r ./config/* ~/.config/
+    cp -r ./dotfiles/config/nvim/ ~/.config/
+    cp ./dotfiles/config/alacritty/alacritty.toml ~/.config/alacritty/alacritty.toml
+    cp ./dotfiles/config/aliases/bash ~/.config/aliases/aliases
+    cp ./dotfiles/config/starship/starship.toml ~/.config/starship.toml
+    cp ./dotfiles/config/tmux/tmux.conf ~/.config/tmux/tmux.conf
 
     echo "Dotfiles setup complete."
 }
@@ -251,7 +255,7 @@ setScripts() {
 
     # --- Copy new scripts ---
     echo "Copying new scripts..."
-    cp -r ./scripts/* ~/.local/bin/
+    cp -r ./dotfiles/config/tmux/tmux-sessioniser ~/.local/bin/tmux-sessioniser
 }
 
 configureGit() {
@@ -291,8 +295,10 @@ installFlatpakApps
 installNpmPackages
 gnomeShellExtensions
 gnomeSettings
+git clone https://github.com/nathanberry97/dotfiles.git
 setDotfiles
 setScripts
+rm -rf ./dotfiles
 configureGit
 
 echo "Setup complete! Please reboot to apply all settings."
