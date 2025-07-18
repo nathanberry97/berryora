@@ -83,4 +83,5 @@ smart-workspace-names=false
 version=33
 
 [useless-gaps]
+gap-size=10
 no-gap-when-maximized=false

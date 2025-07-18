@@ -39,6 +39,7 @@ installPackages() {
         terraform
         tmux
         unzip
+        webkit2gtk3
         zip
     )
 
@@ -273,6 +274,50 @@ configureGit() {
     fi
 }
 
+installPlaydateSdk() {
+    echo "Installing Playdate SDK..."
+
+    SDK_PATH="$HOME/Developer/PlaydateSDK"
+    SHELL_CONFIG="$HOME/.bashrc"  # Change to ~/.zshrc if using Zsh
+
+    # Remove existing SDK if it exists
+    if [ -d "$SDK_PATH" ]; then
+        echo "Existing Playdate SDK found at $SDK_PATH, removing..."
+        rm -rf "$SDK_PATH"
+    fi
+
+    # Download and extract
+    curl -L -o PlaydateSDK-latest.tar.gz https://download.panic.com/playdate_sdk/Linux/PlaydateSDK-latest.tar.gz
+    mkdir -p playdate-sdk
+    tar -xzf PlaydateSDK-latest.tar.gz --strip-components=1 -C playdate-sdk
+
+    # Move to final destination
+    mkdir -p "$(dirname "$SDK_PATH")"
+    mv playdate-sdk "$SDK_PATH"
+
+    # Set environment variables in shell config if not already present
+    if ! grep -q "export PLAYDATE_SDK_PATH=" "$SHELL_CONFIG"; then
+        echo "export PLAYDATE_SDK_PATH=\"$SDK_PATH\"" >> "$SHELL_CONFIG"
+        echo "Added PLAYDATE_SDK_PATH to $SHELL_CONFIG"
+    else
+        echo "PLAYDATE_SDK_PATH already set in $SHELL_CONFIG"
+    fi
+
+    if ! grep -q "\$PLAYDATE_SDK_PATH/bin" "$SHELL_CONFIG"; then
+        echo 'export PATH="$PATH:$PLAYDATE_SDK_PATH/bin"' >> "$SHELL_CONFIG"
+        echo "Added Playdate SDK bin directory to PATH in $SHELL_CONFIG"
+    else
+        echo "PATH already includes Playdate SDK bin directory"
+    fi
+
+    # Clean up
+    rm PlaydateSDK-latest.tar.gz
+
+    sudo bash "$SDK_PATH/setup.sh"
+
+    echo "Playdate SDK installed at $SDK_PATH"
+}
+
 # --- Main Script Execution ---
 clear
 cat << "EOF"
@@ -300,5 +345,6 @@ setDotfiles
 setScripts
 rm -rf ./dotfiles
 configureGit
+installPlaydateSdk
 
 echo "Setup complete! Please reboot to apply all settings."

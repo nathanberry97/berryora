@@ -41,3 +41,7 @@ git clone https://github.com/nathanberry97/berryora.git
 3. The script will handle the rest of the setup process.
 
 4. After the setup is complete, you can reboot your system to see the changes.
+
+## Get current extension configuration
+
+`dconf dump /org/gnome/shell/extensions/`
