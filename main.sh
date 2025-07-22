@@ -278,7 +278,7 @@ installPlaydateSdk() {
     echo "Installing Playdate SDK..."
 
     SDK_PATH="$HOME/Developer/PlaydateSDK"
-    SHELL_CONFIG="$HOME/.bashrc"  # Change to ~/.zshrc if using Zsh
+    SHELL_CONFIG="$HOME/.bashrc"
 
     # Remove existing SDK if it exists
     if [ -d "$SDK_PATH" ]; then
@@ -313,6 +313,7 @@ installPlaydateSdk() {
     # Clean up
     rm PlaydateSDK-latest.tar.gz
 
+    # Setup playdate sdk
     sudo bash "$SDK_PATH/setup.sh"
 
     echo "Playdate SDK installed at $SDK_PATH"
