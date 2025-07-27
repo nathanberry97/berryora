@@ -140,6 +140,7 @@ gnomeShellExtensions() {
         "space-bar@luchrioh"
         "useless-gaps@pimsnel.com"
         "blur-my-shell@aunetx"
+        "rounded-window-corners@fxgn"
     )
 
     for extension in "${gnomeExtensions[@]}"; do

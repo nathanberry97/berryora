@@ -70,6 +70,13 @@ workspace-popup=false
 workspace-wrap-around=false
 workspaces-in-app-grid=true
 
+[rounded-window-corners-reborn]
+border-width=2
+enable-preferences-entry=false
+global-rounded-corner-settings={'padding': <{'left': uint32 1, 'right': 1, 'top': 1, 'bottom': 1}>, 'keepRoundedCorners': <{'maximized': false, 'fullscreen': false}>, 'borderRadius': <uint32 12>, 'smoothing': <0.0>, 'borderColor': <(0.42352941632270813, 0.43921568989753723, 0.52549022436141968, 1.0)>, 'enabled': <true>}
+settings-version=uint32 7
+tweak-kitty-terminal=false
+
 [space-bar/appearance]
 active-workspace-background-color='rgba(0,0,0,0)'
 active-workspace-border-color='rgba(0,0,0,0)'
