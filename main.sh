@@ -167,6 +167,9 @@ gnomeSettings() {
         gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-$i "['<Super>$i']"
     done
 
+    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left "['<Control>Left']"
+    gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "['<Control>Right']"
+
     # --- Disable Default Application Shortcuts ---
     echo "Disabling default application shortcuts..."
     for i in {1..9}; do
