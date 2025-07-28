@@ -44,6 +44,8 @@ sigma=30
 accessibility-menu=true
 animation=0
 background-menu=true
+clock-menu-position=2
+clock-menu-position-offset=0
 controls-manager-spacing-size=0
 dash=true
 dash-icon-size=0
@@ -90,7 +92,7 @@ inactive-workspace-text-color='rgba(255,255,255,0.5)'
 
 [space-bar/behavior]
 always-show-numbers=false
-position='left'
+position='center'
 show-empty-workspaces=true
 smart-workspace-names=false
 
