@@ -235,6 +235,7 @@ setDotfiles() {
     dotfilesToRemove=(
         ~/.config/alacritty/alacritty.toml
         ~/.config/aliases/aliases
+        ~/.config/autostart
         ~/.config/nvim/init.vim
         ~/.config/nvim/lua
         ~/.config/starship.toml
@@ -249,6 +250,7 @@ setDotfiles() {
 
     # --- Copy new dotfiles ---
     echo "Copying new dotfiles..."
+    cp -r ./dotfiles/config/autostart/ ~/.config/
     cp -r ./dotfiles/config/nvim/ ~/.config/
     cp -r ./dotfiles/config/ulauncher/ ~/.config/
     cp ./dotfiles/config/alacritty/alacritty.toml ~/.config/alacritty/alacritty.toml

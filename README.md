@@ -7,7 +7,7 @@
 
 ## Preview
 
-![image](./assets/preview.png)
+![image](./assets/preview.webp)
 
 ## Features
 
