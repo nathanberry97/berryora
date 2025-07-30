@@ -73,6 +73,7 @@ workspace-wrap-around=false
 workspaces-in-app-grid=true
 
 [rounded-window-corners-reborn]
+blacklist=['ulauncher']
 border-width=2
 enable-preferences-entry=false
 global-rounded-corner-settings={'padding': <{'left': uint32 1, 'right': 1, 'top': 1, 'bottom': 1}>, 'keepRoundedCorners': <{'maximized': false, 'fullscreen': false}>, 'borderRadius': <uint32 12>, 'smoothing': <0.0>, 'borderColor': <(0.42352941632270813, 0.43921568989753723, 0.52549022436141968, 1.0)>, 'enabled': <true>}
@@ -95,6 +96,7 @@ always-show-numbers=false
 position='center'
 show-empty-workspaces=true
 smart-workspace-names=false
+toggle-overview=false
 
 [space-bar/state]
 version=33

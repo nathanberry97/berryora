@@ -41,6 +41,7 @@ installPackages() {
         unzip
         webkit2gtk3
         zip
+        ulauncher
     )
 
     for package in "${packageList[@]}"; do
@@ -196,6 +197,18 @@ gnomeSettings() {
     # --- Ensure that useless-gaps extension works properly ---
     gsettings set org.gnome.mutter auto-maximize "false"
 
+    # --- Ulauncher Custom Shortcut ---
+    echo "Setting up Ulauncher custom shortcut..."
+
+    # Register one custom shortcut (custom0)
+    gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings \
+        "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']"
+
+    # Configure the shortcut
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "'Ulauncher Toggle'"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command "'ulauncher-toggle'"
+    gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding "'<Super>space'"
+
     echo "GNOME settings applied successfully."
 }
 
@@ -220,12 +233,13 @@ setDotfiles() {
 
     # --- List of dotfiles to purge ---
     dotfilesToRemove=(
-        ~/.config/aliases/aliases
         ~/.config/alacritty/alacritty.toml
+        ~/.config/aliases/aliases
         ~/.config/nvim/init.vim
         ~/.config/nvim/lua
         ~/.config/starship.toml
         ~/.config/tmux/tmux.conf
+        ~/.config/uluancher
     )
 
     echo "Purging existing dotfiles..."
@@ -236,6 +250,7 @@ setDotfiles() {
     # --- Copy new dotfiles ---
     echo "Copying new dotfiles..."
     cp -r ./dotfiles/config/nvim/ ~/.config/
+    cp -r ./dotfiles/config/ulauncher/ ~/.config/
     cp ./dotfiles/config/alacritty/alacritty.toml ~/.config/alacritty/alacritty.toml
     cp ./dotfiles/config/aliases/bash ~/.config/aliases/aliases
     cp ./dotfiles/config/starship/starship.toml ~/.config/starship.toml
