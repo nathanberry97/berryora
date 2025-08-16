@@ -4,6 +4,7 @@ settings-version=2
 [blur-my-shell/appfolder]
 brightness=0.59999999999999998
 sigma=30
+style-dialogs=1
 
 [blur-my-shell/applications]
 blur=false
@@ -19,19 +20,30 @@ sigma=30
 static-blur=true
 style-dash-to-dock=0
 
+[blur-my-shell/dash-to-panel]
+blur-original-panel=true
+
+[blur-my-shell/hidetopbar]
+compatibility=false
+
 [blur-my-shell/lockscreen]
 pipeline='pipeline_default'
 
 [blur-my-shell/overview]
 pipeline='pipeline_default'
+style-components=1
 
 [blur-my-shell/panel]
-brightness=0.59999999999999998
+blur=true
+brightness=0.0
 force-light-text=false
+override-background=true
+override-background-dynamically=false
 pipeline='pipeline_default'
-sigma=30
-static-blur=true
+sigma=0
+static-blur=false
 style-panel=0
+unblur-in-overview=true
 
 [blur-my-shell/screenshot]
 pipeline='pipeline_default'
@@ -44,6 +56,7 @@ sigma=30
 accessibility-menu=true
 animation=0
 background-menu=true
+clock-menu=false
 clock-menu-position=2
 clock-menu-position-offset=0
 controls-manager-spacing-size=0
@@ -57,7 +70,7 @@ panel-in-overview=true
 ripple-box=true
 search=true
 show-apps-button=true
-startup-status=1
+startup-status=0
 support-notifier-showed-version=34
 support-notifier-type=0
 theme=false
@@ -93,7 +106,7 @@ inactive-workspace-text-color='rgba(255,255,255,0.5)'
 
 [space-bar/behavior]
 always-show-numbers=false
-position='center'
+position='left'
 show-empty-workspaces=true
 smart-workspace-names=false
 toggle-overview=false
@@ -102,5 +115,5 @@ toggle-overview=false
 version=33
 
 [useless-gaps]
-gap-size=10
+gap-size=5
 no-gap-when-maximized=false
