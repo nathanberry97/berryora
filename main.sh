@@ -36,12 +36,13 @@ installPackages() {
         pipx
         podman
         ripgrep
+        sqlite
         terraform
         tmux
+        ulauncher
         unzip
         webkit2gtk3
         zip
-        ulauncher
     )
 
     for package in "${packageList[@]}"; do
@@ -86,6 +87,7 @@ installNpmPackages() {
     echo "Installing npm packages..."
     npmPackages=(
         sass
+        @github/copilot
     )
 
     for package in "${npmPackages[@]}"; do
@@ -107,12 +109,8 @@ installFlatpakApps() {
     fi
 
     flatpakApps=(
-        app.zen_browser.zen
-        com.discordapp.Discord
         com.google.Chrome
-        com.spotify.Client
         com.valvesoftware.Steam
-        org.mapeditor.Tiled
         org.mozilla.Thunderbird
     )
 
@@ -240,7 +238,7 @@ setDotfiles() {
         ~/.config/nvim/lua
         ~/.config/starship.toml
         ~/.config/tmux/tmux.conf
-        ~/.config/uluancher
+        ~/.config/ulauncher
     )
 
     echo "Purging existing dotfiles..."
