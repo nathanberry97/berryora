@@ -36,6 +36,7 @@ installPackages() {
         pipx
         podman
         ripgrep
+        solaar
         sqlite
         terraform
         tmux
