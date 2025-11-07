@@ -17,6 +17,21 @@ installPackages() {
         echo "Terraform is already installed."
     fi
 
+    # --- Install Terragrunt ---
+    echo "Installing Terragrunt..."
+    if ! command -v terragrunt &>/dev/null; then
+        TERRAGRUNT_VERSION=$(curl -s https://api.github.com/repos/gruntwork-io/terragrunt/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+        echo "Latest Terragrunt version: $TERRAGRUNT_VERSION"
+
+        wget -O terragrunt "https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_amd64"
+        chmod +x terragrunt
+        sudo mv terragrunt /usr/local/bin/
+
+        echo "Terragrunt installed successfully."
+    else
+        echo "Terragrunt is already installed."
+    fi
+
     # --- Install packages ---
     packageList=(
         alacritty
